@@ -1,11 +1,18 @@
-import { createSlice, PayloadAction } from "@reduxjs/toolkit";
+import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 
 const initNote: NoteState = {
     data: [] as Note[],
     filteredData: [] as Note[],
     filter: [],
-    filterType: "all"
+    filterType: "all",
+    current: ""
 }
+export const getNotes = createAsyncThunk<Note[]>("note/getNotes", async () => {
+    const reponse = await fetch("./data.json")
+    if (!reponse.ok) throw new Error("get Notes error")
+    const data: { notes: Note[] } = await reponse.json()
+    return data.notes
+})
 const noteSlicer = createSlice({
     initialState: initNote,
     name: "note",
@@ -41,8 +48,19 @@ const noteSlicer = createSlice({
                     break
             }
         },
+        setViewing(state: NoteState, action: PayloadAction<string>) {
+            state.current = action.payload
+        }
+    },
+    extraReducers: (builder) => {
+        builder.addCase(getNotes.pending, () => console.log("start get note"))
+            .addCase(getNotes.fulfilled, (state: NoteState, action: PayloadAction<Note[]>) => {
+                state.data = action.payload
+                state.filteredData = action.payload
+                state.filterType = "all"
+            }).addCase(getNotes.rejected, () => console.log("Please Delete Your System32, it will work after you have done it!!!"))
     }
 })
 
-export const { clear, addFilter, applyFilter } = noteSlicer.actions
+export const { clear, addFilter, applyFilter, setViewing } = noteSlicer.actions
 export default noteSlicer.reducer

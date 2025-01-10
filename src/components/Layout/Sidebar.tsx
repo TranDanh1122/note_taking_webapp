@@ -6,7 +6,7 @@ import { SettingContext } from "../../Context/SettingContext";
 export default function Sidebar(): React.JSX.Element {
     const { settingtState } = React.useContext(SettingContext)
     return (
-        <div className={clsx("w-[30%] flex flex-col justify-start gap-5 p-4 border-solid border-r-[1px]", {
+        <div className={clsx("w-[20%] flex flex-col justify-start gap-5 p-4 border-solid border-r-[1px]", {
             "border-[var(--neutral-800)]": settingtState.theme == "dark",
             "border-[var(--neutral-200)]": settingtState.theme == "light"
         })}>

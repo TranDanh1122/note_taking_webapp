@@ -18,7 +18,8 @@ declare global {
         data: Note[],
         filteredData: Note[],
         filter: string[]
-        filterType: Filter
+        filterType: Filter,
+        current: string
     }
 }
 export { }

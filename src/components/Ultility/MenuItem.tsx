@@ -16,8 +16,6 @@ const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filt
         if (type == "all") return type == "all" && filter.length <= 0
         return filter.includes(text)
     }, [filter, text])
-    console.log(isFilter, settingtState.theme);
-
     return (
         <div onClick={() => handleClick()} className={clsx("h4 flex items-center justify-start gap-2 cursor-pointer p-3 round-8", {
             "text-[var(--neutral-700)]": settingtState.theme == "light",

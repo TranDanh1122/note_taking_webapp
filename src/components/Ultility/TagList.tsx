@@ -12,7 +12,6 @@ export default function TagList(): React.JSX.Element {
     return (
         <div className="flex flex-col gap-2">
             <h2 className="h4 text-neutral-500">Tags</h2>
-            <MenuItem text={"test"} key={"test"} icon="./assets/images/icon-tag.svg" type="tag" />
             {tags && tags.map(tag => <MenuItem text={tag} key={tag} icon="./assets/images/icon-tag.svg" type="tag" />) }
         </div>
     )
