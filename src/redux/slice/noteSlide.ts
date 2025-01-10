@@ -1,10 +1,5 @@
 import { createSlice, PayloadAction } from "@reduxjs/toolkit";
-type NoteState = {
-    data: Note[],
-    filteredData: Note[],
-    filter: string[]
-    filterType: Filter
-}
+
 const initNote: NoteState = {
     data: [] as Note[],
     filteredData: [] as Note[],
@@ -21,8 +16,12 @@ const noteSlicer = createSlice({
         },
         addFilter(state: NoteState, action: PayloadAction<{ filter: string, type: Filter }>) {
             state.filterType = action.payload.type
+            if (state.filterType == "all") {
+                state.filter = [];
+                return
+            }
             if (state.filter.includes(action.payload.filter)) return
-            state.filter.push(action.payload.filter)
+            state.filter = [action.payload.filter]
         },
         applyFilter(state: NoteState) {
             switch (state.filterType) {

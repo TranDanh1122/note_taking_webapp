@@ -12,11 +12,11 @@ const settingReducer = (state: SettingInterface, action: SettingAction): Setting
         default: return state
     }
 }
-export const SettingContext = React.createContext<{ state: SettingInterface, setting: React.Dispatch<SettingAction> }>({ state: {} as SettingInterface, setting: () => { } })
+export const SettingContext = React.createContext<{ settingtState: SettingInterface, setting: React.Dispatch<SettingAction> }>({ settingtState: {} as SettingInterface, setting: () => { } })
 export default function SettingProvider({ children }: { children: React.ReactNode }) {
-    const [state, setting] = React.useReducer(settingReducer, settingInitData)
+    const [settingtState, setting] = React.useReducer(settingReducer, settingInitData)
     return (
-        <SettingContext.Provider value={{ state, setting }}>
+        <SettingContext.Provider value={{ settingtState, setting }}>
             {children}
         </SettingContext.Provider>
     )

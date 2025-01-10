@@ -1,5 +1,4 @@
 
-import './App.css'
 import Main from './pages/Main'
 import Layout from './patials/Layout'
 function App() {

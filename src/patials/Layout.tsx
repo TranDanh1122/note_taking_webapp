@@ -1,15 +1,16 @@
 import React from "react";
 import Sidebar from "../components/Layout/Sidebar";
 import Header from "../components/Layout/Header";
-import Footer from "../components/Layout/Footer";
+import '../App.css'
+
 export default function Layout({ children }: { children: React.ReactNode }): React.JSX.Element {
-    return (<>
+    return (<div className="flex container mb:max-w-none shadow shadow-neutral-200 h-full min-h-[100vh]">
         <Sidebar />
-        <main>
+        <main className="w-full">
             <Header />
             {children}
         </main>
-        <Footer />
+      
 
-    </>)
+    </div>)
 }

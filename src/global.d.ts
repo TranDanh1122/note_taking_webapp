@@ -14,5 +14,11 @@ declare global {
         lastEdited: string,
         isArchived: boolean
     }
+    type NoteState = {
+        data: Note[],
+        filteredData: Note[],
+        filter: string[]
+        filterType: Filter
+    }
 }
 export { }
