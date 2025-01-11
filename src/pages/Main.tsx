@@ -11,14 +11,10 @@ export default function Main(): React.JSX.Element {
         dispatch(getNotes())
     }, [])
     return (
-        <div className="flex flex-none">
-
+        <div className="flex flex-none min-h-[85vh] max-h-[85vh]">
             <NoteList />
-
             <Note />
-            <div>
-                <Action />
-            </div>
+            <Action />
         </div>
     )
 }

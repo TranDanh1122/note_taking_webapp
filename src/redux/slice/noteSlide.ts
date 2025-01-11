@@ -57,6 +57,23 @@ const noteSlicer = createSlice({
                     return action.payload
                 return note
             })
+            state.filteredData = state.filteredData.map((note: Note) => {
+                if (note.id == action.payload.id)
+                    return action.payload
+                return note
+            })
+        },
+        save(state: NoteState, action: PayloadAction<Note>) {
+            state.data.push(action.payload)
+            state.filteredData.push(action.payload)
+
+        },
+        cancel(state: NoteState) {
+            state.current = ""
+        },
+        del(state: NoteState, action: PayloadAction<string>) {
+            state.data = state.data.filter((note: Note) => note.id != action.payload)
+            state.filteredData = state.filteredData.filter((note: Note) => note.id != action.payload)
         }
     },
     extraReducers: (builder) => {
@@ -69,5 +86,5 @@ const noteSlicer = createSlice({
     }
 })
 
-export const { clear, addFilter, applyFilter, show, edit } = noteSlicer.actions
+export const { clear, addFilter, applyFilter, show, edit, cancel, del, save } = noteSlicer.actions
 export default noteSlicer.reducer

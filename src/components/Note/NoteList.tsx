@@ -1,17 +1,20 @@
 import React from "react";
 import NoteItem from "../Ultility/NoteItem";
 import Button from "../Ultility/Button";
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { AppState } from "../../redux/store/store";
 import clsx from "clsx";
 import { SettingContext } from "../../Context/SettingContext";
 import useScrollBar from "../../hooks/useScrollBar";
 import { v4 as uuidv4 } from "uuid"
+import { cancel } from "../../redux/slice/noteSlide";
 export default function NoteList(): React.JSX.Element {
     const { filteredData, filterType } = useSelector((state: AppState) => state.note)
     const { settingtState } = React.useContext(SettingContext)
     const listElement = useScrollBar(filteredData)
+    const dispatch = useDispatch()
     const createNewNote = () => {
+        dispatch(cancel())
     }
     let emptyData = ""
     switch (filterType) {

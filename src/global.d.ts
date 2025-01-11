@@ -12,7 +12,8 @@ declare global {
         tags: string[],
         content: string,
         lastEdited: string,
-        isArchived: boolean
+        isArchived: boolean,
+        [key: string]: any
     }
     type NoteState = {
         data: Note[],

@@ -1,8 +1,7 @@
 import React from "react";
 import Sidebar from "../components/Layout/Sidebar";
 import Header from "../components/Layout/Header";
-import '../App.css'
-
+import Modal from "../components/Ultility/Modal";
 export default function Layout({ children }: { children: React.ReactNode }): React.JSX.Element {
     return (<div className="flex container mb:max-w-none shadow shadow-neutral-200 h-full min-h-[100vh]">
         <Sidebar />
@@ -10,7 +9,7 @@ export default function Layout({ children }: { children: React.ReactNode }): Rea
             <Header />
             {children}
         </main>
-      
+        <Modal />
 
     </div>)
 }
