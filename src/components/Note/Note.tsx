@@ -37,7 +37,8 @@ export default function Note(): React.JSX.Element {
                 "placeholder-[var(--neutral-950)] text-[var(--neutral-950)] focus:border-[var(--neutral-950)]": settingtState.theme == "light" && inputState.title != "error",
                 "placeholder-white text-white focus:border-[var(--neutral-250)]": settingtState.theme == "dark" && inputState.title != "error",
                 "border-b-[1px] border-solid border-[var(--red-500)]": inputState.title == "error",
-                "border-none": inputState.title != "error"
+                "border-none": inputState.title != "error",
+                "bg-slate-950":settingtState.theme == "dark"
             })} />
         <div className={clsx("w-full flex flex-col gap-2 py-2 border-solid border-b-[1px]", {
             "text-[var(--neutral-950)] border-[var(--neutral-200)]": settingtState.theme == "light",
@@ -53,7 +54,8 @@ export default function Note(): React.JSX.Element {
                         "focus:border-[var(--neutral-950)]": settingtState.theme == "light" && inputState.tags != "error",
                         "focus:border-[var(--neutral-250)]": settingtState.theme == "dark" && inputState.tags != "error",
                         "border-b-[1px] border-solid border-[var(--red-500)]": inputState.tags == "error",
-                        "border-none": inputState.tags != "error"
+                        "border-none": inputState.tags != "error",
+                        "bg-slate-950":settingtState.theme == "dark"
                     })} />
             </div>
             <div className="flex items-center gap">
@@ -70,7 +72,8 @@ export default function Note(): React.JSX.Element {
                 "text-[var(--neutral-800)] border-[var(--neutral-200)]": settingtState.theme == "light" && inputState.content != "error",
                 "text-white border-[var(--neutral-200)]": settingtState.theme == "dark" && inputState.content != "error",
                 "border-b-[1px] border-solid border-[var(--red-500)]": inputState.content == "error",
-                "border-solid border-b-[1px]": inputState.title != "error"
+                "border-solid border-b-[1px]": inputState.title != "error",
+                "bg-slate-950":settingtState.theme == "dark"
             })}>
         </textarea>
         <div className="flex items-center gap-4">

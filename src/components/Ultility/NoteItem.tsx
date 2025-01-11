@@ -5,6 +5,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { AppDisPatch, AppState } from "../../redux/store/store";
 import { show } from "../../redux/slice/noteSlide";
 import useFormattedDate from "../../hooks/useFormattedDate";
+import { v4 } from "uuid";
 export default function NoteItem({ note }: { note: Note }) {
     const { settingtState } = React.useContext(SettingContext)
     const { current } = useSelector((state: AppState) => state.note)
@@ -24,7 +25,10 @@ export default function NoteItem({ note }: { note: Note }) {
             <h2 className="h3">{note.title}</h2>
             <div className="flex flex-wrap gap-2 gap-y-2">
                 {
-                    note.tags.map(tag => <span className="h6 px-2 py-1 round-4 bg-[var(--neutral-200)]">{tag}</span>)
+                    note.tags.map(tag => <span key={v4()} className={clsx("h6 px-2 py-1 round-4 ", {
+                        "bg-[var(--neutral-400)]" :settingtState.theme == "dark",
+                        "bg-[var(--neutral-200)]" :settingtState.theme == "light",
+                    })}>{tag}</span>)
                 }
             </div>
             <span className={clsx("h6", {

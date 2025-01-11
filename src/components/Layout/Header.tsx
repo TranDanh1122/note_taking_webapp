@@ -4,12 +4,13 @@ import { AppDisPatch, AppState } from "../../redux/store/store";
 import clsx from "clsx";
 import { SettingContext } from "../../Context/SettingContext";
 import { addFilter, applyFilter, clear } from "../../redux/slice/noteSlide";
+import { NavigationContext } from "../../Context/NavigationContext";
 export default function Header(): React.JSX.Element {
     const { filter, filterType } = useSelector((state: AppState) => state.note)
     const dispatch: AppDisPatch = useDispatch()
     const { settingtState } = React.useContext(SettingContext)
     const debounceTimeout = React.useRef<number | null>(null);
-
+    const { page, goTo } = React.useContext(NavigationContext)
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         if (debounceTimeout.current) clearTimeout(debounceTimeout.current)
@@ -17,12 +18,22 @@ export default function Header(): React.JSX.Element {
             if (value) {
                 dispatch(addFilter({ type: "search", filter: value }))
                 dispatch(applyFilter())
-            } else {                
+            } else {
                 dispatch(clear())
                 dispatch(applyFilter())
             }
         }, 500)
 
+    }
+    const handleSettingPage = () => {
+        dispatch(clear())
+        dispatch(applyFilter())
+
+        if (page == "setting") {
+            goTo("main")
+        } else {
+            goTo("setting")
+        }
     }
     return (<div className={clsx("flex items-center px-8  py-6 justify-start max-h-[15vh] gap-8 border-solid border-b-[1px]", {
         "border-[var(--neutral-200)]": settingtState.theme == "light",
@@ -33,7 +44,7 @@ export default function Header(): React.JSX.Element {
             "text-white": settingtState.theme == "dark"
         })}>
             {
-                filterType == "all" ? "All Notes" :
+                filterType == "all" ? (page == "setting" ? "Setting" : "All Notes") :
                     filterType == "status" ? "Archived Notes" :
                         <span className={clsx("", {
                             "text-neutral-600": settingtState.theme == "light",
@@ -49,8 +60,10 @@ export default function Header(): React.JSX.Element {
             <span className="px-4">
                 <i className="w-5 h-5 block bg-[var(--neutral-400)]" style={{ mask: "url(./assets/images/icon-search.svg) center / cover no-repeat", WebkitMask: "url(./assets/images/icon-search.svg) center / cover no-repeat" }}></i>
             </span>
-            <input onChange={(e) => handleChange(e)} type="text" className="outline-none border-none py-3 pr-4 w-full" placeholder="Search by title, content, or tags…" />
+            <input onChange={(e) => handleChange(e)} type="text" className={clsx("outline-none border-none py-3 pr-4 w-full", {
+                "bg-[var(--neutral-950)]": settingtState.theme == "dark"
+            })} placeholder="Search by title, content, or tags…" />
         </div>
-        <i className="w-6 h-6 block bg-[var(--neutral-400)]" style={{ mask: "url(./assets/images/icon-settings.svg) center / cover no-repeat", WebkitMask: "url(./assets/images/icon-settings.svg) center / cover no-repeat" }}></i>
+        <i onClick={() => handleSettingPage()} className="w-6 h-6 block bg-[var(--neutral-400)] cursor-pointer" style={{ mask: "url(./assets/images/icon-settings.svg) center / cover no-repeat", WebkitMask: "url(./assets/images/icon-settings.svg) center / cover no-repeat" }}></i>
     </div>)
 }

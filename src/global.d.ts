@@ -3,7 +3,10 @@ declare global {
     type Font = "sans-serif" | "serif" | "monospace"
     interface SettingInterface {
         theme: Theme,
-        font: Font
+        font: Font,
+        current: string,
+        pickedTheme : Theme|"system"
+        [key: string]: string
     }
     type Filter = "search" | "status" | "tag" | "all"
     interface Note {

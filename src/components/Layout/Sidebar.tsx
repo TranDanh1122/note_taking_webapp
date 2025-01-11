@@ -10,7 +10,7 @@ export default function Sidebar(): React.JSX.Element {
             "border-[var(--neutral-800)]": settingtState.theme == "dark",
             "border-[var(--neutral-200)]": settingtState.theme == "light"
         })}>
-            <img src="./assets/images/logo.svg" alt="logo" className="object-cover w-24 h-7" />
+            <img src={`./assets/images/${settingtState.theme == "light" ? "logo" : "logo-dark"}.svg`} alt="logo" className="object-cover w-24 h-7" />
             <div className={clsx("flex flex-col border-b-[1px] border-solid py-4", {
                 "border-[var(--neutral-800)]": settingtState.theme == "dark",
                 "border-[var(--neutral-200)]": settingtState.theme == "light"

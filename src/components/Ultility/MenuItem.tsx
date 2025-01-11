@@ -4,15 +4,24 @@ import { SettingContext } from "../../Context/SettingContext";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDisPatch, AppState } from "../../redux/store/store";
 import { addFilter, applyFilter } from "../../redux/slice/noteSlide";
-const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filter | "none" }): React.JSX.Element => {
-    const { settingtState } = React.useContext(SettingContext)
+import { NavigationContext } from "../../Context/NavigationContext";
+const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filter | "none" | "setting" }): React.JSX.Element => {
+    const { settingtState, setting } = React.useContext(SettingContext)
     const { filter } = useSelector((state: AppState) => state.note)
+    const {goTo} = React.useContext(NavigationContext)
     const dispatch: AppDisPatch = useDispatch()
-    const handleClick = React.useCallback(() => {
+    const handleClick = () => {
         if (type == "none") return
+        if (type == "setting") {            
+            setting({ type: "CHANGE_SETTING_PAGE", payload: text })
+            return
+        }
+        goTo("main")
+        console.log(type, text);
+        
         dispatch(addFilter({ filter: text, type: type }))
         dispatch(applyFilter())
-    }, [dispatch, text, type])
+    }
     const isFilter = React.useMemo(() => {
         if (type == "all") return type == "all" && filter.length <= 0
         return filter.includes(text)
@@ -21,7 +30,9 @@ const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filt
         <div onClick={() => handleClick()} className={clsx("h4 flex items-center justify-start gap-2 cursor-pointer p-3 round-8", {
             "text-[var(--neutral-700)]": settingtState.theme == "light",
             "text-white": settingtState.theme == "dark",
-            "bg-[var(--neutral-100)]": isFilter
+            "bg-[var(--neutral-100)]": (isFilter || settingtState.current == text) && settingtState.theme == "light",
+            "bg-[var(--neutral-400)]": (isFilter || settingtState.current == text) && settingtState.theme == "dark"
+
         })} >
             <i className={clsx("w-4 h-4  hover:bg-[var(--blue_500)]", {
                 "bg-[var(--neutral-700)]": settingtState.theme == "light" && !isFilter,
@@ -32,8 +43,8 @@ const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filt
             <i className={clsx("w-4 h-4 ml-auto", {
                 "bg-[var(--neutral-700)]": settingtState.theme == "light",
                 "bg-white": settingtState.theme == "dark",
-                "block": isFilter,
-                "hidden": !isFilter
+                "block": isFilter || settingtState.current == text,
+                "hidden": !isFilter  &&  settingtState.current != text
             })} style={{ mask: `url(./assets/images/icon-chevron-right.svg) center / cover no-repeat`, WebkitMask: `url(./assets/images/icon-chevron-right.svg) center / cover no-repeat` }} />
         </div>
     )
