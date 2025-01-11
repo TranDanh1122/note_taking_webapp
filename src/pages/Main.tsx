@@ -15,9 +15,7 @@ export default function Main(): React.JSX.Element {
 
             <NoteList />
 
-            <div>
-                <Note />
-            </div>
+            <Note />
             <div>
                 <Action />
             </div>

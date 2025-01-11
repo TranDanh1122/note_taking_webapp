@@ -3,17 +3,15 @@ import React from "react";
 import { SettingContext } from "../../Context/SettingContext";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDisPatch, AppState } from "../../redux/store/store";
-import { setViewing } from "../../redux/slice/noteSlide";
+import { show } from "../../redux/slice/noteSlide";
+import useFormattedDate from "../../hooks/useFormattedDate";
 export default function NoteItem({ note }: { note: Note }) {
     const { settingtState } = React.useContext(SettingContext)
     const { current } = useSelector((state: AppState) => state.note)
     const dispatch = useDispatch<AppDisPatch>()
-    const date = new Date('2024-10-26T09:20:00Z');
-    const options: Intl.DateTimeFormatOptions = { day: '2-digit', month: 'short', year: 'numeric' };
-    const formattedDate = date.toLocaleDateString('en-US', options).replace(',', '');
-    const formattedTime = date.toISOString().substring(11, 16);
+    const { formattedDate, formattedTime } = useFormattedDate(note.lastEdited)
     const handleClick = () => {
-        dispatch(setViewing(note.id))
+        dispatch(show(note.id))
     }
     return (
         <div onClick={() => handleClick()} className={clsx("flex flex-col gap-3 p-4 border-b-[1px] border-solid border-[var(--neutral-300)] cursor-pointer round-8", {

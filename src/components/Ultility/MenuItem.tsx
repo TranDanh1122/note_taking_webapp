@@ -4,11 +4,12 @@ import { SettingContext } from "../../Context/SettingContext";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDisPatch, AppState } from "../../redux/store/store";
 import { addFilter, applyFilter } from "../../redux/slice/noteSlide";
-const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filter }): React.JSX.Element => {
+const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filter | "none" }): React.JSX.Element => {
     const { settingtState } = React.useContext(SettingContext)
     const { filter } = useSelector((state: AppState) => state.note)
     const dispatch: AppDisPatch = useDispatch()
     const handleClick = React.useCallback(() => {
+        if (type == "none") return
         dispatch(addFilter({ filter: text, type: type }))
         dispatch(applyFilter())
     }, [dispatch, text, type])

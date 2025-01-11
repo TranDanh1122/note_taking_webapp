@@ -48,8 +48,15 @@ const noteSlicer = createSlice({
                     break
             }
         },
-        setViewing(state: NoteState, action: PayloadAction<string>) {
+        show(state: NoteState, action: PayloadAction<string>) {
             state.current = action.payload
+        },
+        edit(state: NoteState, action: PayloadAction<Note>) {
+            state.data = state.data.map((note: Note) => {
+                if (note.id == action.payload.id)
+                    return action.payload
+                return note
+            })
         }
     },
     extraReducers: (builder) => {
@@ -62,5 +69,5 @@ const noteSlicer = createSlice({
     }
 })
 
-export const { clear, addFilter, applyFilter, setViewing } = noteSlicer.actions
+export const { clear, addFilter, applyFilter, show, edit } = noteSlicer.actions
 export default noteSlicer.reducer
