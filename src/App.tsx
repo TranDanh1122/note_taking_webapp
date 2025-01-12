@@ -22,13 +22,16 @@ function App() {
   React.useEffect(() => {
     dispatch(getNotes())
   }, [])
-  return (
+
+  return (<>
     <Layout >
       {(page == "main" && width.current > 1023) && <Main key={v4()} />}
       {(["main", "list", "tag", "detail", "search", "setting", "setting_detail"].includes(page) && width.current <= 1023) && <Mobile key={v4()} />}
-
-      {(page == "setting"  && width.current > 1023) && <Setting />}
+      {(page == "setting" && width.current > 1023) && <Setting />}
     </Layout>
+
+  </>
+
 
 
   )
