@@ -1,7 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
 import { firestoreApi, parseFirestoreData, parseDocumentId } from "../../api/firebase";
 const token = localStorage.getItem("access_token")
-const user = JSON.parse(localStorage.getItem("user") ?? "")
+const user = JSON.parse(localStorage.getItem("user") ?? "{}")
 const initNote: NoteState = {
     data: [] as Note[],
     filteredData: [] as Note[],
