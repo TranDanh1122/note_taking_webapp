@@ -3,6 +3,7 @@ import Sidebar from "../components/Layout/Sidebar";
 import Header from "../components/Layout/Header";
 import Modal from "../components/Ultility/Modal";
 import clsx from "clsx";
+import Footer from "../components/Layout/Footer";
 import { SettingContext } from "../Context/SettingContext";
 export default function Layout({ children }: { children: React.ReactNode }): React.JSX.Element {
     const { settingtState } = React.useContext(SettingContext)
@@ -16,6 +17,7 @@ export default function Layout({ children }: { children: React.ReactNode }): Rea
             <main className="w-full">
                 <Header />
                 {children}
+                <Footer />
             </main>
             <Modal />
 

@@ -30,9 +30,7 @@ const noteSlicer = createSlice({
             if (state.filter.includes(action.payload.filter)) return
             state.filter = [action.payload.filter]
         },
-        applyFilter(state: NoteState) {
-            console.log(state.filterType, state.filter);
-            
+        applyFilter(state: NoteState) {            
             switch (state.filterType) {
                 case "search":
                     state.filteredData = state.data.filter(

@@ -10,10 +10,11 @@ import { v4 } from 'uuid'
 import { useDispatch } from "react-redux";
 import { AppDisPatch } from './redux/store/store'
 import { getNotes } from './redux/slice/noteSlide'
-
+import Mobile from './pages/Mobile'
 function App() {
   const { page } = React.useContext(NavigationContext)
   const { settingtState } = React.useContext(SettingContext)
+  const width = React.useRef<number>(window.innerWidth)
   React.useEffect(() => {
     document.documentElement.setAttribute("data-font", settingtState.font);
   }, [settingtState.font])
@@ -23,7 +24,9 @@ function App() {
   }, [])
   return (
     <Layout >
-      {page == "main" && <Main key={v4()} />}
+      {(page == "main" && width.current > 1023) && <Main key={v4()} />}
+      {(["main", "list", "tag", "detail", "search", "setting", "setting_detail"].includes(page) && width.current <= 1023) && <Mobile key={v4()} />}
+
       {page == "setting" && <Setting />}
     </Layout>
 

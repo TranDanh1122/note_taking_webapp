@@ -8,17 +8,22 @@ import { NavigationContext } from "../../Context/NavigationContext";
 const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filter | "none" | "setting" }): React.JSX.Element => {
     const { settingtState, setting } = React.useContext(SettingContext)
     const { filter } = useSelector((state: AppState) => state.note)
-    const {goTo} = React.useContext(NavigationContext)
+    const { page, goTo } = React.useContext(NavigationContext)
     const dispatch: AppDisPatch = useDispatch()
     const handleClick = () => {
         if (type == "none") return
-        if (type == "setting") {            
+        if (type == "setting") {
             setting({ type: "CHANGE_SETTING_PAGE", payload: text })
             return
         }
-        goTo("main")
-        console.log(type, text);
-        
+        dispatch(addFilter({ filter: text, type: type }))
+        dispatch(applyFilter())
+        if(type=="tag" && page == "tag") {
+            goTo("list")
+            return
+        }
+        if (page != "main") goTo("main")
+
         dispatch(addFilter({ filter: text, type: type }))
         dispatch(applyFilter())
     }
@@ -44,7 +49,7 @@ const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filt
                 "bg-[var(--neutral-700)]": settingtState.theme == "light",
                 "bg-white": settingtState.theme == "dark",
                 "block": isFilter || settingtState.current == text,
-                "hidden": !isFilter  &&  settingtState.current != text
+                "hidden": !isFilter && settingtState.current != text
             })} style={{ mask: `url(./assets/images/icon-chevron-right.svg) center / cover no-repeat`, WebkitMask: `url(./assets/images/icon-chevron-right.svg) center / cover no-repeat` }} />
         </div>
     )
