@@ -1,5 +1,4 @@
 import React from "react"
-type StatusType = "typing" | "default" | "error"
 interface InputStatus {
     title: StatusType,
     tags: StatusType,

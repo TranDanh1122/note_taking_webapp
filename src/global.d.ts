@@ -5,9 +5,10 @@ declare global {
         theme: Theme,
         font: Font,
         current: string,
-        pickedTheme : Theme|"system"
+        pickedTheme : Theme|"system",
         [key: string]: string
     }
+    type StatusType = "typing" | "default" | "error"
     type Filter = "search" | "status" | "tag" | "all"
     interface Note {
         id: string,
