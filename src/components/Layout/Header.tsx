@@ -46,7 +46,7 @@ export default function Header(): React.JSX.Element {
             "text-white": settingtState.theme == "dark"
         })}>
             {
-                filterType == "all" ? (page == "setting" ? "Setting" : "All Notes") :
+                filterType == "all" ? (page == "setting" || page == "setting_detail" ? "Setting" : "All Notes") :
                     filterType == "status" ? "Archived Notes" :
                         <span className={clsx("", {
                             "text-neutral-600": settingtState.theme == "light",

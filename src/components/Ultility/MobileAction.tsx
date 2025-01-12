@@ -72,7 +72,7 @@ export default function MobileAction({ note }: { note?: Note }) {
         dispatch(cancel())
         goTo("detail")
     }
-    const { isValid } = useValidate(note ?? {} as Note)
+    const { isValid } = useValidate(note)
 
     const handleSave = (type: string) => {
         if (!isValid) return

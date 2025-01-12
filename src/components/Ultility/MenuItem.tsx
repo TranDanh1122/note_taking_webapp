@@ -12,16 +12,23 @@ const MenuItem = ({ text, icon, type }: { text: string, icon: string, type: Filt
     const dispatch: AppDisPatch = useDispatch()
     const handleClick = () => {
         if (type == "none") return
-        if (type == "setting") {
+        if (type == "setting" && window.innerWidth > 1023) {
             setting({ type: "CHANGE_SETTING_PAGE", payload: text })
             return
         }
+        if (type == "setting") {            
+            goTo("setting_detail")  
+            setting({ type: "CHANGE_SETTING_PAGE", payload: text })
+            return
+        }
+        
         dispatch(addFilter({ filter: text, type: type }))
         dispatch(applyFilter())
-        if(type=="tag" && page == "tag") {
+        if (type == "tag" && page == "tag") {
             goTo("list")
             return
         }
+
         if (page != "main") goTo("main")
 
         dispatch(addFilter({ filter: text, type: type }))

@@ -6,7 +6,7 @@ interface InputStatus {
     content: StatusType
     [key: string]: StatusType
 }
-const useValidate = (note: Note) => {
+const useValidate = (note?: Note) => {
     const [inputState, setInputState] = React.useState<InputStatus>({
         title: "default",
         tags: "default",

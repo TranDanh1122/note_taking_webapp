@@ -666,6 +666,10 @@ video {
   bottom: 0px;
 }
 
+.bottom-\[20\%\] {
+  bottom: 20%;
+}
+
 .left-0 {
   left: 0px;
 }
@@ -674,20 +678,16 @@ video {
   left: 50%;
 }
 
+.right-9 {
+  right: 2.25rem;
+}
+
 .top-0 {
   top: 0px;
 }
 
 .top-\[50\%\] {
   top: 50%;
-}
-
-.bottom-\[20\%\] {
-  bottom: 20%;
-}
-
-.right-9 {
-  right: 2.25rem;
 }
 
 .z-10 {
@@ -718,6 +718,10 @@ video {
   display: none;
 }
 
+.h-16 {
+  height: 4rem;
+}
+
 .h-4 {
   height: 1rem;
 }
@@ -741,10 +745,6 @@ video {
 
 .h-full {
   height: 100%;
-}
-
-.h-16 {
-  height: 4rem;
 }
 
 .max-h-\[15\%\] {
@@ -773,6 +773,10 @@ video {
 
 .min-h-\[85vh\] {
   min-height: 85vh;
+}
+
+.w-16 {
+  width: 4rem;
 }
 
 .w-24 {
@@ -809,10 +813,6 @@ video {
 
 .w-full {
   width: 100%;
-}
-
-.w-16 {
-  width: 4rem;
 }
 
 .min-w-\[300px\] {
@@ -1126,6 +1126,10 @@ video {
   text-transform: capitalize;
 }
 
+.text-\[var\(--blue-500\)\] {
+  color: var(--blue-500);
+}
+
 .text-\[var\(--neutral-200\)\] {
   color: var(--neutral-200);
 }
@@ -1140,6 +1144,10 @@ video {
 
 .text-\[var\(--neutral-500\)\] {
   color: var(--neutral-500);
+}
+
+.text-\[var\(--neutral-600\)\] {
+  color: var(--neutral-600);
 }
 
 .text-\[var\(--neutral-700\)\] {
@@ -1181,14 +1189,6 @@ video {
 .text-white {
   --tw-text-opacity: 1;
   color: rgb(255 255 255 / var(--tw-text-opacity, 1));
-}
-
-.text-\[var\(--neutral-600\)\] {
-  color: var(--neutral-600);
-}
-
-.text-\[var\(--blue-500\)\] {
-  color: var(--blue-500);
 }
 
 .placeholder-\[var\(--neutral-950\)\]::-moz-placeholder {
@@ -1394,12 +1394,12 @@ body {
     display: none;
   }
 
-  .mb\:h-full {
-    height: 100%;
-  }
-
   .mb\:h-4 {
     height: 1rem;
+  }
+
+  .mb\:h-full {
+    height: 100%;
   }
 
   .mb\:max-h-\[100vh\] {
@@ -1410,12 +1410,12 @@ body {
     min-height: 50vh;
   }
 
-  .mb\:w-full {
-    width: 100%;
-  }
-
   .mb\:w-4 {
     width: 1rem;
+  }
+
+  .mb\:w-full {
+    width: 100%;
   }
 
   .mb\:max-w-none {
@@ -1447,6 +1447,21 @@ body {
     background-color: rgb(255 255 255 / var(--tw-bg-opacity, 1));
   }
 
+  .mb\:px-2 {
+    padding-left: 0.5rem;
+    padding-right: 0.5rem;
+  }
+
+  .mb\:px-3 {
+    padding-left: 0.75rem;
+    padding-right: 0.75rem;
+  }
+
+  .mb\:py-1 {
+    padding-top: 0.25rem;
+    padding-bottom: 0.25rem;
+  }
+
   .mb\:py-\[10\%\] {
     padding-top: 10%;
     padding-bottom: 10%;
@@ -1460,26 +1475,6 @@ body {
   .mb\:py-\[20\%\] {
     padding-top: 20%;
     padding-bottom: 20%;
-  }
-
-  .mb\:px-2 {
-    padding-left: 0.5rem;
-    padding-right: 0.5rem;
-  }
-
-  .mb\:px-0 {
-    padding-left: 0px;
-    padding-right: 0px;
-  }
-
-  .mb\:px-3 {
-    padding-left: 0.75rem;
-    padding-right: 0.75rem;
-  }
-
-  .mb\:py-1 {
-    padding-top: 0.25rem;
-    padding-bottom: 0.25rem;
   }
 }
 
@@ -1530,6 +1525,10 @@ body {
 
   .tb\:w-full {
     width: 100%;
+  }
+
+  .tb\:max-w-none {
+    max-width: none;
   }
 
   .tb\:flex-col {

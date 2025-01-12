@@ -6,7 +6,7 @@ import { v4 } from "uuid";
 export default function Setting(): React.JSX.Element {
     const { settingtState } = React.useContext(SettingContext)
     return (
-        <div className="w-[50%] px-6 py-5 flex flex-col gap-5">
+        <div className="w-[50%] tb:w-full mb:w-full px-6 py-5 flex flex-col gap-5">
             <h2 className={clsx("h3", {
                 "text-[var(--neutral-950)]": settingtState.theme == "light",
                 "text-white": settingtState.theme == "dark"

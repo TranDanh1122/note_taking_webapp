@@ -3,18 +3,18 @@ import React from "react";
 import { SettingContext } from "../../Context/SettingContext";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDisPatch, AppState } from "../../redux/store/store";
-import { addFilter, applyFilter } from "../../redux/slice/noteSlide";
+import { addFilter, applyFilter, clear } from "../../redux/slice/noteSlide";
 import { NavigationContext } from "../../Context/NavigationContext";
-export default function FooterItem({ text, icon, type }: { text: string, icon: string, type: Filter | "none" | "setting" }): React.JSX.Element {
+export default function FooterItem({ text, icon, type }: { text: string, icon: string, type: "none" | "setting" | Filter }): React.JSX.Element {
     const { settingtState } = React.useContext(SettingContext)
-    const {  goTo } = React.useContext(NavigationContext)
+    const { page, goTo } = React.useContext(NavigationContext)
     const dispatch: AppDisPatch = useDispatch()
     const { filterType } = useSelector((state: AppState) => state.note)
     const handleClick = () => {
         if (type == "setting") {
+            dispatch(clear())
             goTo("setting")
         }
-
         if (type == "all") {
             dispatch(addFilter({ filter: "", type: "all" }))
             dispatch(applyFilter())
@@ -39,18 +39,18 @@ export default function FooterItem({ text, icon, type }: { text: string, icon: s
 
         }
     }
-
-
-
+    console.log(filterType, type, page);
+    const isSetting = page == "setting" || page == "setting_detail"
+    const isSelected = (filterType == type && !isSetting) || (isSetting && (type == "setting"))
 
     return (<div onClick={handleClick} className={clsx("flex flex-col items-center justify-center gap-2 px-8 mb:px-2 py-3 capitalize", {
-        "bg-[var(--blue-50)]": settingtState.theme == "light" && filterType == type,
-        "bg-[var(--neutral-500)]": settingtState.theme == "dark" && filterType == type,
+        "bg-[var(--blue-50)]": settingtState.theme == "light" && isSelected,
+        "bg-[var(--neutral-300)]": settingtState.theme == "dark" && isSelected,
     })}>
         <span className="px-6 mb:px-3 py-2 mb:py-1 round-4">
             <i style={{ mask: `url(${icon}) center / cover no-repeat`, WebkitMask: `url(${icon}) center / cover no-repeat` }} className={clsx("w-6 mb:w-4 h-6 mb:h-4 block", {
-                "bg-[var(--neutral-600)]": filterType != type,
-                "bg-[var(--blue-500)]": filterType == type,
+                "bg-[var(--neutral-600)]": !isSelected,
+                "bg-[var(--blue-500)]": isSelected,
             })}></i>
 
         </span>
