@@ -7,7 +7,7 @@ import { firebaseAuthApi } from "../../api/firebase";
 import useFormAction from "../../hooks/useFormAction";
 import { useDispatch, useSelector } from "react-redux";
 import { AppDisPatch, AppState } from "../../redux/store/store";
-import { setUser, setToken } from "../../redux/slice/authSlide"
+import { setUser, setToken, logout } from "../../redux/slice/authSlide"
 import { NavigationContext } from "../../Context/NavigationContext";
 interface FormField {
     value: string,
@@ -92,8 +92,10 @@ export default function Auth(): React.JSX.Element {
                             if (response.status !== 200) throw new Error("error")
                             dispatch(setUser(response.data))
                             dispatch(setToken(response.data.idToken))
+
                         }
                         handleLogin()
+
                         break
                     }
                     case "signup": {
@@ -119,7 +121,10 @@ export default function Auth(): React.JSX.Element {
                         const handleReset = async () => {
                             if (!newFormData.password?.value) throw new Error("Valid date error")
                             if (token) {
-                                await firebaseAuthApi.changePassword(token, newFormData.password?.value)
+                                const response = await firebaseAuthApi.changePassword(token, newFormData.password?.value)
+                                if (response.status !== 200) throw new Error("error")
+                                dispatch(logout())
+                                setAction("login")
                             } else {
                                 setAction("login")
                             }

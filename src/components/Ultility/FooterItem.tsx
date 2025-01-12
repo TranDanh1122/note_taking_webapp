@@ -39,7 +39,6 @@ export default function FooterItem({ text, icon, type }: { text: string, icon: s
 
         }
     }
-    console.log(filterType, type, page);
     const isSetting = page == "setting" || page == "setting_detail"
     const isSelected = (filterType == type && !isSetting) || (isSetting && (type == "setting"))
 

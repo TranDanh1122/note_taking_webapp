@@ -10,6 +10,8 @@ const authSlicer = createSlice({
     reducers: {
         setUser: (state: UserData, action: PayloadAction<unknown>) => {
             state.user = action.payload
+            localStorage.setItem("user", JSON.stringify(action.payload))
+
         },
         setToken: (state: UserData, action: PayloadAction<string>) => {
             state.token = action.payload

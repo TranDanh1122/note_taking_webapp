@@ -1,5 +1,7 @@
 import { createAsyncThunk, createSlice, PayloadAction } from "@reduxjs/toolkit";
-
+import { firestoreApi, parseFirestoreData, parseDocumentId } from "../../api/firebase";
+const token = localStorage.getItem("access_token")
+const user = JSON.parse(localStorage.getItem("user") ?? "")
 const initNote: NoteState = {
     data: [] as Note[],
     filteredData: [] as Note[],
@@ -7,11 +9,14 @@ const initNote: NoteState = {
     filterType: "all",
     current: ""
 }
-export const getNotes = createAsyncThunk<Note[]>("note/getNotes", async () => {
-    const reponse = await fetch("./data.json")
-    if (!reponse.ok) throw new Error("get Notes error")
-    const data: { notes: Note[] } = await reponse.json()
-    return data.notes
+
+export const getNotes = createAsyncThunk<{ document: { fields: Note, name: string }, readTime: "string" }[]>("note/getNotes", async () => {
+    // const reponse = await fetch("./data.json")
+    // if (!reponse.ok) throw new Error("get Notes error")
+    // const data: { notes: Note[] } = await reponse.json()
+    if (!token || !user) throw new Error()
+    const response = await firestoreApi.getDocuments("notes", token, user.localId)
+    return response
 })
 const noteSlicer = createSlice({
     initialState: initNote,
@@ -20,6 +25,7 @@ const noteSlicer = createSlice({
         clear(state: NoteState) {
             state.filter = []
             state.filterType = "all"
+
         },
         addFilter(state: NoteState, action: PayloadAction<{ filter: string, type: Filter }>) {
             state.filterType = action.payload.type
@@ -30,7 +36,7 @@ const noteSlicer = createSlice({
             if (state.filter.includes(action.payload.filter)) return
             state.filter = [action.payload.filter]
         },
-        applyFilter(state: NoteState) {            
+        applyFilter(state: NoteState) {
             switch (state.filterType) {
                 case "search":
                     state.filteredData = state.data.filter(
@@ -62,25 +68,37 @@ const noteSlicer = createSlice({
                     return action.payload
                 return note
             })
+            if (!token || !user) throw new Error()
+            firestoreApi.updateDocument("notes", action.payload.id, action.payload, token, user.localId)
+
         },
         save(state: NoteState, action: PayloadAction<Note>) {
+            if (!token || !user) throw new Error()
+            firestoreApi.addDocument("notes", action.payload, token, user.localId)
             state.data.push(action.payload)
             state.filteredData.push(action.payload)
-
         },
         cancel(state: NoteState) {
             state.current = ""
         },
         del(state: NoteState, action: PayloadAction<string>) {
+            if (!token || !user) throw new Error()
+            firestoreApi.deleteDocument("notes", action.payload, token)
             state.data = state.data.filter((note: Note) => note.id != action.payload)
             state.filteredData = state.filteredData.filter((note: Note) => note.id != action.payload)
         }
     },
     extraReducers: (builder) => {
         builder.addCase(getNotes.pending, () => console.log("start get note"))
-            .addCase(getNotes.fulfilled, (state: NoteState, action: PayloadAction<Note[]>) => {
-                state.data = action.payload
-                state.filteredData = action.payload
+            .addCase(getNotes.fulfilled, (state: NoteState, action: PayloadAction<{ document: { fields: Note, name: string }, readTime: "string" }[]>) => {
+                state.data = []
+                state.filteredData = []
+                action.payload.forEach(el => {
+                    const document = el.document
+                    const data = parseFirestoreData(document)
+                    state.data.push({ ...data, id: parseDocumentId(document.name) })
+                    state.filteredData.push({ ...data, id: parseDocumentId(document.name) })
+                })
                 state.filterType = "all"
             }).addCase(getNotes.rejected, () => console.log("Please Delete Your System32, it will work after you have done it!!!"))
     }

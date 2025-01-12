@@ -18,7 +18,8 @@ export default function NoteList(): React.JSX.Element {
     const dispatch = useDispatch()
     const createNewNote = () => {
         dispatch(cancel())
-        goTo("detail")
+        if (window.innerWidth <= 1023)
+            goTo("detail")
     }
     let emptyData = ""
     switch (filterType) {
@@ -32,7 +33,7 @@ export default function NoteList(): React.JSX.Element {
             emptyData = "No notes match your search. Try a different keyword or create a new note."
             break;
     }
-
+    
     if (filteredData.length <= 0) return (
         <div className="flex flex-col w-[25%] tb:w-full mb:w-full px-4 py-5 tb:py-[20%] mb:py-[20%]">
             <div className="w-full tb:hidden mb:hidden">

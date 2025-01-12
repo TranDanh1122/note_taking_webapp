@@ -100,7 +100,7 @@ export default function MobileAction({ note }: { note?: Note }) {
     if (page != "detail" && filterType != "tag") return <></>
     return (
 
-        <div className=" w-full flex justify-between gap-4 pb-2">
+        <div className=" w-full mb:flex tb:flex justify-between gap-4 pb-2 hidden">
             <div onClick={handleBack} className={clsx("flex items-center justify-start gap-2", {
                 "text-[var(--neutral-600)]": settingtState.theme == "light",
                 "text-[var(--neutral-200)]": settingtState.theme == "dark",
