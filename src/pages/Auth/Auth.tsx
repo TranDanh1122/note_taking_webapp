@@ -1,4 +1,4 @@
-import React from "react";
+import React, { FormHTMLAttributes } from "react";
 import clsx from "clsx";
 import { SettingContext } from "../../Context/SettingContext";
 import { v4 } from "uuid";
@@ -6,20 +6,21 @@ import Button from "../../components/Ultility/Button";
 export default function Auth(): React.JSX.Element {
     const { settingtState } = React.useContext(SettingContext)
     const [action, setAction] = React.useState<string>("login")
-    const { title, content } = (() => {
+    const { title, content, button } = (() => {
         switch (action) {
             case "login":
-                return { title: "Welcome to Note", content: "Please log in to continue" }
+                return { title: "Welcome to Note", content: "Please log in to continue", button: "Login" }
             case "forgot":
-                return { title: "Forgotten your password?", content: "Enter your email below, and we’ll send you a link to reset it." }
+                return { title: "Forgotten your password?", content: "Enter your email below, and we’ll send you a link to reset it.", button: "Send Reset Link" }
             case "reset":
-                return { title: "Reset Your Password", content: "Choose a new password to secure your account." }
+                return { title: "Reset Your Password", content: "Choose a new password to secure your account.", button: "Reset Password" }
             case "signup":
-                return { title: "Create Your Account", content: "Sign up to start organizing your notes and boost your productivity." }
-            default: return { title: "Welcome to Note", content: "Please log in to continue" }
+                return { title: "Create Your Account", content: "Sign up to start organizing your notes and boost your productivity.", button: "Sign up" }
+            default: return { title: "Welcome to Note", content: "Please log in to continue", button: "Login" }
         }
     })();
-    const submit = () => {
+    const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+        e.preventDefault()
 
     }
     return (
@@ -35,20 +36,28 @@ export default function Auth(): React.JSX.Element {
                 <img src={`./assets/images/${settingtState.theme == "light" ? "logo" : "logo-dark"}.svg`} alt="logo" className="mx-auto object-cover w-24 h-7" />
                 <h1 className="text-center h1 mt-4 mb-2">{title}</h1>
                 <p className="text-center h5 text-[var(--neutral-400)]">{content}</p>
-                <form noValidate className={clsx("mt-8 flex gap-4 flex-col", {
+                <form onSubmit={(e) => handleSubmit(e)} noValidate className={clsx("mt-8 flex gap-4 flex-col", {
                     "text-[var(--neutral-950)]": settingtState.theme == "light",
                     "text-white": settingtState.theme == "dark",
                 })}>
-                    <fieldset >
-                        <label className="h4" htmlFor="email">Email Address</label>
-                        <input type="email" name="email" className="px-4 py-3 outline-none cursor-pointer focus:bg-[var(--neutral-50)] rounded-lg mt-2 w-full border-solid border-[1px] border-[var(--neutral-200)]" placeholder="email@example.com" />
-                    </fieldset>
+                    {action != "reset" &&
+                        <fieldset >
+                            <label className="h4" htmlFor="email">Email Address</label>
+                            <input type="email" name="email" className="px-4 py-3 outline-none cursor-pointer focus:bg-[var(--neutral-50)] rounded-lg mt-2 w-full border-solid border-[1px] border-[var(--neutral-200)]" placeholder="email@example.com" />
+                        </fieldset>
+                    }
 
-                    <fieldset>
-                        <label className="h4 flex justify-between" htmlFor="password">Password <span className="underline cursor-pointer">Forgot</span></label>
+                    {action != "forgot" && <fieldset>
+                        <label className="h4 flex justify-between" htmlFor="password">Password <span className="underline cursor-pointer" onClick={() => setAction("forgot")}>Forgot</span></label>
                         <input type="password" name="password" className="px-4 py-3 outline-none cursor-pointer focus:bg-[var(--neutral-50)] rounded-lg mt-2 w-full border-solid border-[1px] border-[var(--neutral-200)]" />
-                    </fieldset>
-                    <Button key={v4()} bgColor={"var(--blue-500)"} textColor={"var(--neutral)"} clickEvent={submit} text={action.toUpperCase()} />
+                    </fieldset>}
+
+                    {action == "reset" && <fieldset>
+                        <label className="h4 flex justify-between" htmlFor="confirm-password">Confirm Password </label>
+                        <input type="password" name="confirm-password" className="px-4 py-3 outline-none cursor-pointer focus:bg-[var(--neutral-50)] rounded-lg mt-2 w-full border-solid border-[1px] border-[var(--neutral-200)]" />
+                    </fieldset>}
+
+                    <Button key={v4()} bgColor={"var(--blue-500)"} textColor={"var(--neutral)"} clickEvent={() => { }} text={button} />
                     <div className="w-full h-[1px] bg-[var(--neutral-200)]"></div>
                     <p className="h5 text-[var(--neutral-400)] text-center">Or log in with:</p>
                     <button type="button" className="h4 py-3 px-14 w-full bg-[var(--neutral-50)] flex items-end justify-center gap-2 round-8 text-center cursor-pointer hover:bg-[var(--neutral-50)] ">
@@ -56,7 +65,14 @@ export default function Auth(): React.JSX.Element {
                         Google
                     </button>
                     <div className="w-full h-[1px] bg-[var(--neutral-200)]"></div>
-                    <p className="h5 text-center">No account yet? <span className="underline">Sign Up</span></p>
+                    {
+                        action == "login" && <p className="h5 text-center">No account yet? <span onClick={() => setAction("signup")} className="underline cursor-pointer">Sign Up</span></p>
+
+                    }
+                    {
+                        action != "login" && <p className="h5 text-center"> Already have an account? <span onClick={() => setAction("login")} className="underline cursor-pointer">Login</span></p>
+
+                    }
                 </form>
             </div>
 
