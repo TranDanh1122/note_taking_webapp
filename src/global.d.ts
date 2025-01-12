@@ -5,7 +5,7 @@ declare global {
         theme: Theme,
         font: Font,
         current: string,
-        pickedTheme : Theme|"system",
+        pickedTheme: Theme | "system",
         [key: string]: string
     }
     type StatusType = "typing" | "default" | "error"
@@ -25,6 +25,10 @@ declare global {
         filter: string[]
         filterType: Filter,
         current: string
+    }
+    interface UserData {
+        user: unknown,
+        token: string | null
     }
 }
 export { }

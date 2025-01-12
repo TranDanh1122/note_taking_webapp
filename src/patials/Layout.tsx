@@ -7,10 +7,13 @@ import Footer from "../components/Layout/Footer";
 import { SettingContext } from "../Context/SettingContext";
 import { NavigationContext } from "../Context/NavigationContext";
 import Auth from "../pages/Auth/Auth";
+import { useSelector } from "react-redux";
+import { AppState } from "../redux/store/store";
 export default function Layout({ children }: { children: React.ReactNode }): React.JSX.Element {
     const { settingtState } = React.useContext(SettingContext)
-    // const { page } = React.useContext(NavigationContext)
-    return <Auth />
+    const { token } = useSelector((state: AppState) => state.auth)
+    const {page} = React.useContext(NavigationContext)
+    if (!token || page == "auth") return <Auth />
     return (
         <div className={clsx("flex container tb:max-w-none mb:max-w-none shadow shadow-neutral-200 h-full min-h-[100vh]", {
             "bg-white": settingtState.theme == "light",

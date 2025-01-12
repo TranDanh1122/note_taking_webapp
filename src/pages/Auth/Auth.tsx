@@ -1,9 +1,14 @@
-import React, { FormHTMLAttributes } from "react";
+import React from "react";
 import clsx from "clsx";
 import { SettingContext } from "../../Context/SettingContext";
 import { v4 } from "uuid";
 import Button from "../../components/Ultility/Button";
-
+import { firebaseAuthApi } from "../../api/firebase";
+import useFormAction from "../../hooks/useFormAction";
+import { useDispatch, useSelector } from "react-redux";
+import { AppDisPatch, AppState } from "../../redux/store/store";
+import { setUser, setToken } from "../../redux/slice/authSlide"
+import { NavigationContext } from "../../Context/NavigationContext";
 interface FormField {
     value: string,
     state: StatusType,
@@ -17,40 +22,16 @@ interface Form {
     [key: string]: FormField | undefined
 }
 const initData: Form = {
-    email: {
-        value: "",
-        state: "default",
-        message: ""
-    },
-    password: {
-        value: "",
-        state: "default",
-        message: ""
-    },
-    confirmPassword: {
-        value: "",
-        state: "default",
-        message: ""
-    }
+
 }
 export default function Auth(): React.JSX.Element {
     const { settingtState } = React.useContext(SettingContext)
-    const [action, setAction] = React.useState<string>("login")
     const [formData, setFormData] = React.useState<Form>(initData)
     const [showPass, setShowPass] = React.useState<{ pass: boolean, confirm: boolean }>({ pass: false, confirm: false })
-    const { title, content, button } = (() => {
-        switch (action) {
-            case "login":
-                return { title: "Welcome to Note", content: "Please log in to continue", button: "Login" }
-            case "forgot":
-                return { title: "Forgotten your password?", content: "Enter your email below, and we’ll send you a link to reset it.", button: "Send Reset Link" }
-            case "reset":
-                return { title: "Reset Your Password", content: "Choose a new password to secure your account.", button: "Reset Password" }
-            case "signup":
-                return { title: "Create Your Account", content: "Sign up to start organizing your notes and boost your productivity.", button: "Sign up" }
-            default: return { title: "Welcome to Note", content: "Please log in to continue", button: "Login" }
-        }
-    })();
+    const { title, content, button, action, setAction } = useFormAction();
+    const dispatch: AppDisPatch = useDispatch()
+    const { page } = React.useContext(NavigationContext)
+    const { token } = useSelector((state: AppState) => state.auth);
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const value = e.target.value
         const name = e.target.name
@@ -61,10 +42,17 @@ export default function Auth(): React.JSX.Element {
         }
         setFormData({ ...newFormData })
     }
+    React.useEffect(() => {
+        if (page == "auth" && token) {
+            setAction("reset")
+        }
+    }, [])
     const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault()
         let isNotValid = false
         const newFormData = formData
+        console.log(newFormData);
+
         for (const key in newFormData) {
             const fieldData = newFormData[key];
             if (!fieldData) {
@@ -94,9 +82,57 @@ export default function Auth(): React.JSX.Element {
             }
         }
         setFormData({ ...newFormData })
-        // if(!isNotValid) {
+        if (!isNotValid) {
+            try {
+                switch (action) {
+                    case "login": {
+                        const handleLogin = async () => {
+                            if (!newFormData.email?.value || !newFormData.password?.value) throw new Error("Valid date error")
+                            const response = await firebaseAuthApi.login(newFormData.email?.value, newFormData.password?.value)
+                            if (response.status !== 200) throw new Error("error")
+                            dispatch(setUser(response.data))
+                            dispatch(setToken(response.data.idToken))
+                        }
+                        handleLogin()
+                        break
+                    }
+                    case "signup": {
+                        const handleSignup = async () => {
+                            if (!newFormData.email?.value || !newFormData.password?.value) throw new Error("Valid date error")
+                            const response = await firebaseAuthApi.register(newFormData.email?.value, newFormData.password?.value)
+                            if (response.status !== 200) throw new Error("error")
+                            dispatch(setUser(response.data))
+                            dispatch(setToken(response.data.idToken))
+                        }
+                        handleSignup()
+                        break
+                    }
+                    case "forgot": {
+                        const handleReset = async () => {
+                            if (!newFormData.email?.value) throw new Error("Valid date error")
+                            await firebaseAuthApi.resetPassword(newFormData.email?.value)
+                        }
+                        handleReset()
+                        break
+                    }
+                    case "reset": {
+                        const handleReset = async () => {
+                            if (!newFormData.password?.value) throw new Error("Valid date error")
+                            if (token) {
+                                await firebaseAuthApi.changePassword(token, newFormData.password?.value)
+                            } else {
+                                setAction("login")
+                            }
+                        }
+                        handleReset()
+                        break
+                    }
+                }
 
-        // }
+            } catch (error) {
+                console.error("error", error)
+            }
+        }
     }
     return (
         <div className={clsx("w-full h-full min-h-[100vh] flex items-center justify-center", {
@@ -152,8 +188,8 @@ export default function Auth(): React.JSX.Element {
                     </fieldset>}
 
                     {action == "reset" && <fieldset className="relative">
-                        <i onClick={() => setShowPass({ ...showPass, pass: !showPass.pass })} className="w-5 h-5 block absolute right-4 top-[50%] z-10 bg-slate-400"
-                            style={{ mask: `url(./assets/images/icon-${showPass.pass ? "show" : "hide"}-password.svg) center / cover no-repeat`, WebkitMask: `url(./assets/images/icon-${showPass.pass ? "show" : "hide"}-password.svg) center / cover no-repeat` }}></i>
+                        <i onClick={() => setShowPass({ ...showPass, confirm: !showPass.confirm })} className="w-5 h-5 block absolute right-4 top-[50%] z-10 bg-slate-400"
+                            style={{ mask: `url(./assets/images/icon-${showPass.confirm ? "show" : "hide"}-password.svg) center / cover no-repeat`, WebkitMask: `url(./assets/images/icon-${showPass.confirm ? "show" : "hide"}-password.svg) center / cover no-repeat` }}></i>
                         <label className="h4 flex justify-between" htmlFor="confirmPassword">Confirm Password </label>
                         <input value={formData.confirmPassword?.value} onChange={(e) => handleChange(e)} type={!showPass.confirm ? "password" : "text"} name="confirmPassword"
                             className={clsx(`px-4 py-3 outline-none cursor-pointer 
