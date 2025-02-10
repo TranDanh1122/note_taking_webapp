@@ -5,7 +5,7 @@ A modern note-taking web application built with React, Redux, TypeScript, Tailwi
 
 ✅ Create, edit, and delete notes
 
-✅ Real-time syncing with Firestore (REST API, no SDK)
+✅ Firestore (REST API, no SDK)
 
 ✅ Tagging & categorization
 
@@ -13,9 +13,8 @@ A modern note-taking web application built with React, Redux, TypeScript, Tailwi
 
 ✅ Fully responsive UI with TailwindCSS
 
-✅ Redux for state management
+✅ Redux Toolkit for state management
 
-✅ Client-side routing with React Router
 
 🛠️ Tech Stack
 
@@ -31,4 +30,4 @@ TypeScript – Type safety
 
 Firestore REST API – Backend storage
 
-Ứng dụng hiện đã xóa key auth google vì lí do bảo mật
+
