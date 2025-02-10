@@ -18,9 +18,17 @@ A modern note-taking web application built with React, Redux, TypeScript, Tailwi
 ✅ Client-side routing with React Router
 
 🛠️ Tech Stack
+
 React – UI development
+
 Redux Toolkit – State management
+
 React Router – Client-side routing
+
 TailwindCSS – Styling
+
 TypeScript – Type safety
+
 Firestore REST API – Backend storage
+
+Ứng dụng hiện đã xóa key auth google vì lí do bảo mật
