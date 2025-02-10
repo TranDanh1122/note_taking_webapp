@@ -2,12 +2,19 @@
 A modern note-taking web application built with React, Redux, TypeScript, TailwindCSS, React Router, and Firestore (REST API).
 
 🚀 Features
+
 ✅ Create, edit, and delete notes
+
 ✅ Real-time syncing with Firestore (REST API, no SDK)
+
 ✅ Tagging & categorization
+
 ✅ Dark mode support
+
 ✅ Fully responsive UI with TailwindCSS
+
 ✅ Redux for state management
+
 ✅ Client-side routing with React Router
 
 🛠️ Tech Stack
