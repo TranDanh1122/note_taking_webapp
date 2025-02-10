@@ -1,6 +1,6 @@
 import axios from 'axios';
-const FIREBASE_PROJECT_ID = import.meta.env.NEXT_PUBLIC_FIREBASE_PROJECT_ID!;
-const FIREBASE_API_KEY = import.meta.env.NEXT_PUBLIC_FIREBASE_API_KEY!;
+const FIREBASE_PROJECT_ID = import.meta.env.VITE_FIREBASE_PROJECT_ID!;
+const FIREBASE_API_KEY = import.meta.env.VITE_FIREBASE_API_KEY!;
 
 const axiosClient = axios.create({
     baseURL: `https://firestore.googleapis.com/v1/projects/${FIREBASE_PROJECT_ID}/databases/(default)/documents`,
